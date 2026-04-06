@@ -39,7 +39,6 @@ fun ToepScreen(
     modifier: Modifier = Modifier
 ) {
     val state = viewModel.uiState
-    val lowestIds = viewModel.lowestScorePlayerIds
     var showResetDialog by remember { mutableStateOf(false) }
 
     if (showResetDialog) {
@@ -69,32 +68,24 @@ fun ToepScreen(
             .background(MaterialTheme.colorScheme.background)
     ) {
         // Top bar
-        Row(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(MaroonDark)
-                .padding(horizontal = 8.dp, vertical = 12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+                .padding(horizontal = 8.dp, vertical = 12.dp)
         ) {
-            TextButton(onClick = { viewModel.nextRound() }) {
-                Text(
-                    text = "Volgende\nronde",
-                    color = White,
-                    fontSize = 12.sp,
-                    textAlign = TextAlign.Center,
-                    lineHeight = 14.sp
-                )
-            }
             Text(
-                text = "TOEP",
+                text = "TOEPEN",
                 color = White,
                 fontSize = 32.sp,
                 fontWeight = FontWeight.ExtraBold,
-                modifier = Modifier.weight(1f),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
             )
-            TextButton(onClick = { showResetDialog = true }) {
+            TextButton(
+                onClick = { showResetDialog = true },
+                modifier = Modifier.align(Alignment.CenterEnd)
+            ) {
                 Text(
                     text = "Herstart\nspel",
                     color = White,
@@ -103,21 +94,6 @@ fun ToepScreen(
                     lineHeight = 14.sp
                 )
             }
-        }
-
-        // Round indicator
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(MaroonDark.copy(alpha = 0.8f))
-                .padding(vertical = 6.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "Ronde ${state.currentRound}  |  \uD83C\uDFC6 Eerste bij 3 wint",
-                color = White,
-                fontSize = 14.sp
-            )
         }
 
         // Player list
@@ -143,7 +119,6 @@ fun ToepScreen(
                 items(state.players, key = { it.id }) { player ->
                     PlayerScoreCard(
                         player = player,
-                        isLowestScore = player.id in lowestIds,
                         onIncrementScore = { viewModel.incrementScore(player.id) },
                         onDecrementScore = { viewModel.decrementScore(player.id) },
                         onIncrementKsk = { viewModel.incrementKleineSpelers(player.id) },

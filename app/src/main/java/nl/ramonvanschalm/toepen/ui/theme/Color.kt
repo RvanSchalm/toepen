@@ -11,6 +11,8 @@ val Beige = Color(0xFFF5E6D3)
 val BeigeDark = Color(0xFFE8D5C0)
 
 val Gold = Color(0xFFD4A847)
+val Warning = Color(0xFFB8860B)
+val Eliminated = Color(0xFF2A1010)
 
 val White = Color(0xFFFFFFFF)
 val OffWhite = Color(0xFFFFF8F0)

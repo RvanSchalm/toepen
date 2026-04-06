@@ -21,30 +21,42 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import nl.ramonvanschalm.toepen.model.Player
+import nl.ramonvanschalm.toepen.ui.theme.Eliminated
 import nl.ramonvanschalm.toepen.ui.theme.Maroon
-import nl.ramonvanschalm.toepen.ui.theme.MaroonLight
+import nl.ramonvanschalm.toepen.ui.theme.Warning
 import nl.ramonvanschalm.toepen.ui.theme.White
 
 @Composable
 fun PlayerScoreCard(
     player: Player,
-    isLowestScore: Boolean,
     onIncrementScore: () -> Unit,
     onDecrementScore: () -> Unit,
     onIncrementKsk: () -> Unit,
     onResetKsk: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val isEliminated = player.score >= 15
+    val isWarning = player.score == 14
+
+    val cardColor = when {
+        isEliminated -> Eliminated
+        isWarning -> Warning
+        else -> Maroon
+    }
+
     Card(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .alpha(if (isEliminated) 0.5f else 1f),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = if (isLowestScore) MaroonLight else Maroon
+            containerColor = cardColor
         )
     ) {
         Row(
